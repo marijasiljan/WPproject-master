@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bookings</title>
+
+    <link href="https://bootswatch.com/5/journal/bootstrap.css" rel="stylesheet">
+    <script src="https://bootswatch.com/_assets/css/custom.min.css"></script>
+    <script src="https://bootswatch.com/_vendor/prismjs/themes/prism-okaidia.css" ></script>
+    <script src="https://bootswatch.com/_vendor/font-awesome/css/font-awesome.min.css"></script>
+</head>
+<body>
+<div th:replace="layout.html :: header"></div>
+
+<div style="margin-top: 5%">
+    <div>
+        <div class="container mb-4">
+            <div class="row">
+                <div class="col-12" >
+                    <h2 class="text-center">Free booking terms</h2>
+                    <a  th:href="@{/termini/add}" class="btn btn-primary">
+                        Add new
+                    </a>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Termin id</th>
+                                <th>Pocetok</th>
+                                <th>Vremetraenje</th>
+                                <th>Vraboten id</th>
+                                <th>Vraboten ime</th>
+                                <th>rezervacija id</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <tr class="item" th:each="termin :${termini}" >
+                                <td th:text="${termin.id}">[termin.id]</td>
+                                <td th:text="${termin.format()}" >[termin.pocetok]</td>
+                                <td th:text="${termin.vremetraenje}">[termin.vremetraenje]</td>
+                                <td th:text="${termin.vraboteni.getId()}" >[termin.vraboteni.getId()]</td>
+                                <td th:text="${termin.vraboteni.getFirstName()}" >[termin.vraboteni.getFirstName()]</td>
+
+                                <td >
+                                    <th:block th:each="rez :${rezervacii}" th:if="${termin.getRezervacijas().contains(rez)}">
+                                        <p th:text="${rez.getId()} !=null ? ${rez.getId()} : 'not reserved'">[termin.rezervacijas]
+                                        </p>
+
+                                    </th:block>
+                                </td>
+                                <td>
+                                    <a th:href="@{'/termini/{id}/edit' (id = ${termin.id})}" class="btn btn-link">Edit</a>
+
+                                    <form method="POST" th:action="@{'/termini/{id}/delete' (id = ${termin.id})}">
+                                        <button type="submit" class="btn btn-primary">Delete</button>
+                                    </form>
+                                </td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+    </div>
+</div>
+
+<div th:replace="layout.html ::footer"></div>
+
+</body>
+</html>
